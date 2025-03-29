@@ -10,7 +10,7 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    BUCKET_NAME = request.form.get('name')
+    BUCKET_NAME = 'andres-ocampo-test-bucket'
     
     if not BUCKET_NAME:
         return 'Bucket name is required', 400
