@@ -8,6 +8,8 @@
 <body>
     <h1>Upload an Image to S3</h1>
     <form method="post" action="/upload" enctype="multipart/form-data">
+        <label for="name">Nombre del Bucket:</label>
+        <input type="text" id="name" name="name" required><br><br>
         <input type="file" name="file" accept="image/*" required>
         <button type="submit">Upload</button>
     </form>
