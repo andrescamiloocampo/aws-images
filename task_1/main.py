@@ -1,5 +1,6 @@
 import boto3
 from flask import Flask,request,jsonify,render_template
+from botocore.exceptions import NoCredentialsError
 
 server = Flask(__name__)
 
