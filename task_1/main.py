@@ -2,7 +2,7 @@ import boto3
 from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
-s3 = boto3.client('s3')
+s3 = boto3.client('s3', region_name='us-east-1')  
 
 @app.route("/")
 def index():
