@@ -3,8 +3,8 @@ import boto3
 
 app = Flask(__name__)
 
-s3_client = boto3.client('s3')
-rekognition_client = boto3.client('rekognition')
+s3_client = boto3.client('s3',region_name='us-east-1')
+rekognition_client = boto3.client('rekognition',region_name='us-east-1')
 
 @app.route('/analyze', methods=['GET'])
 def analyze_image():
@@ -24,7 +24,7 @@ def analyze_image():
         MaxLabels=10,
         MinConfidence=75
     )
-        
+
     labels = response['Labels']
     return jsonify([(label['Name'], label['Confidence']) for label in labels])
 
