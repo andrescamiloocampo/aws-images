@@ -1,27 +1,31 @@
 import boto3
-from flask import Flask
+from flask import Flask,request,jsonify,render_template
 
 server = Flask(__name__)
 
 s3 = boto3.client('s3')
 
 @server.route("/")
-def list_buckets():
-    query = request.args.get('query')  
-    
-    if query:
-        try:
-            s3.head_bucket(Bucket=query)  
-            objects = s3.list_objects_v2(Bucket=query)
-            object_names = [obj['Key'] for obj in objects.get('Contents', [])]
-            return jsonify({"Bucket": query, "Objects": object_names})
-        except s3.exceptions.ClientError:
-            return jsonify({"Error": "Bucket not found"}), 404
-    
-    response = s3.list_buckets()
-    bucket_names = [bucket['Name'] for bucket in response.get('Buckets', [])]
-    return jsonify({"Buckets": bucket_names})
+def index():
+    return render_template('index.html')
 
+@server.route('/upload',methods=['POST'])
+def upload_file():
+    BUCKET_NAME = request.args.get('name')
+
+    if 'file' not in request.files:
+        return 'No file part'
+    file = request.files['file']
+    if file.filename == '':
+        return 'No selected file'
+
+    try:
+        s3.upload_fileobj(file, BUCKET_NAME, file.filename)
+        return "File uploaded successfully"
+    except NoCredentialsError:
+        return "Credentials not available"
+    except Exception as e:
+        return str(e)
 
 if __name__ == "__main__":
     server.run(host='0.0.0.0', port=5000, debug=True)
