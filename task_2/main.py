@@ -29,4 +29,4 @@ def analyze_image():
     return jsonify([(label['Name'], label['Confidence']) for label in labels])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True)
